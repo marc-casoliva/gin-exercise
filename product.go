@@ -8,11 +8,11 @@ import (
 )
 
 type Price struct {
-	Amount   float64
+	Amount   float32
 	Currency string
 }
 
-func NewPriceInEuros(amount float64) Price {
+func NewPriceInEuros(amount float32) Price {
 	return Price{amount, "EUR"}
 }
 

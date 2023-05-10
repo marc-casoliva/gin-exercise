@@ -15,7 +15,7 @@ import (
 var productRepository ProductRepository
 
 type postReq struct {
-	Price       float64 `json:"price" binding:"required"`
+	Price       float32 `json:"price" binding:"required"`
 	Description string  `json:"description" binding:"required"`
 }
 

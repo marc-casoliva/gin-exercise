@@ -3,6 +3,6 @@ CREATE TABLE products (
                        id VARCHAR(255) PRIMARY KEY,
                        created_at TIMESTAMP NOT NULL,
                        description VARCHAR(255) NOT NULL,
-                       price_amount INTEGER NOT NULL,
+                       price_amount FLOAT(32) NOT NULL,
                        price_currency VARCHAR(255) NOT NULL
 );

@@ -23,3 +23,15 @@ func NewProductDB(p domain.Product) Product {
 		PriceCurrency: p.Price.Currency,
 	}
 }
+func (product Product) ToProduct() domain.Product {
+
+	return domain.Product{
+		ID:          product.ID,
+		Description: product.Description,
+		Price: domain.Price{
+			Amount:   product.PriceAmount,
+			Currency: product.PriceCurrency,
+		},
+		Creation: product.CreatedAt,
+	}
+}

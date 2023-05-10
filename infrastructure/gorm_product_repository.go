@@ -22,8 +22,14 @@ func (g GormProductRepository) Save(p domain.Product) error {
 }
 
 func (g GormProductRepository) RetrieveById(id string) (domain.Product, error) {
-	//TODO implement me
-	panic("implement me")
+	p := gormdb.Product{}
+	tx := g.db.First(&p, "id = ?", id)
+
+	if tx.Error != nil {
+		return domain.Product{}, tx.Error
+	}
+
+	return p.ToProduct(), nil
 }
 
 func NewGormProductRepository() (domain.ProductRepository, error) {

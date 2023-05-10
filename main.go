@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gin-exercise/m/v2/domain"
 	"net/http"
 	"os"
 
@@ -27,7 +28,7 @@ func postProductHandler(ctx *gin.Context) {
 		return
 	}
 
-	p, err := NewProduct(uuid.NewString(), NewPriceInEuros(req.Price), req.Description)
+	p, err := domain.NewProduct(uuid.NewString(), domain.NewPriceInEuros(req.Price), req.Description)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
@@ -71,7 +72,7 @@ func main() {
 		os.Exit(1)
 	}
 	router := gin.Default()
-	productRepository = NewInMemoryProductRepository()
+	productRepository, _ = NewGormProductRepository()
 
 	router.POST("/product", postProductHandler)
 	router.GET("/product/:id", getProductHandler)

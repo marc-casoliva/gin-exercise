@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gin-exercise/m/v2/domain"
 	"testing"
 
 	"github.com/google/uuid"
@@ -9,7 +10,7 @@ import (
 func Test_Save(t *testing.T) {
 	t.Run("should save the product inMemory", func(t *testing.T) {
 		description := "product description saved"
-		p, _ := NewProduct(uuid.NewString(), NewPriceInEuros(22), description)
+		p, _ := domain.NewProduct(uuid.NewString(), domain.NewPriceInEuros(22), description)
 		sut := NewInMemoryProductRepository()
 
 		if err := sut.Save(p); err != nil {

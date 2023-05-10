@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	config "gin-exercise/m/v2/infrastructure/config"
+
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
@@ -29,7 +30,7 @@ func MigrateTables() error {
 		return fmt.Errorf("failed to create postgres driver: %v", err)
 	}
 
-	m, err := migrate.NewWithDatabaseInstance("file://db/migrations", "postgres", driver)
+	m, err := migrate.NewWithDatabaseInstance("file://infrastructure/db/migrations", "postgres", driver)
 	if err != nil {
 		return fmt.Errorf("failed to create migrations instance: %v", err)
 	}

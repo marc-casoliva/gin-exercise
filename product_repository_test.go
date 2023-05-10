@@ -9,7 +9,7 @@ import (
 func Test_Save(t *testing.T) {
 	t.Run("should save the product inMemory", func(t *testing.T) {
 		description := "product description saved"
-		p, _:= NewProduct(uuid.NewString(), NewPriceInEuros(22), description)
+		p, _ := NewProduct(uuid.NewString(), NewPriceInEuros(22), description)
 		sut := NewInMemoryProductRepository()
 
 		if err := sut.Save(p); err != nil {

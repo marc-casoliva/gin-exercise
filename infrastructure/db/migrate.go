@@ -11,7 +11,7 @@ import (
 
 // migrateCmd represents the migrate command
 
-func migrateTables() error {
+func MigrateTables() error {
 	cfg, err := config.LoadConfig()
 
 	if err != nil {

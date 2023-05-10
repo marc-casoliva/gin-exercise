@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
+	"gin-exercise/m/v2/infrastructure/db"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -46,6 +49,11 @@ func getProductHandler(ctx *gin.Context) {
 }
 
 func main() {
+	err := db.MigrateTables()
+	if err != nil {
+		fmt.Println("problem migrating database: ", err)
+		os.Exit(1)
+	}
 	router := gin.Default()
 	productRepository = NewInMemoryProductRepository()
 

@@ -36,15 +36,15 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  http_server:
-    build: 
-      dockerfile: http_server/Dockerfile
-    container_name: http_server
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-      - broker
+  # http_server:
+  #   build: 
+  #     dockerfile: http_server/Dockerfile
+  #   container_name: http_server
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - db
+  #     - broker
 
   # consumer:
   #   image: kafka-consumer:latest

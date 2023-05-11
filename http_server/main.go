@@ -16,6 +16,7 @@ import (
 )
 
 var productRepository domain.ProductRepository
+var asyncProducer sarama.AsyncProducer
 
 type postReq struct {
 	Price       float32 `json:"price" binding:"required"`
@@ -71,18 +72,13 @@ func initConfig() {
 
 	config := sarama.NewConfig()
 	config.Producer.Return.Successes = true
-	p, err := sarama.NewAsyncProducer([]string{"broker:9092"}, config)
+	var err error
+	asyncProducer, err = sarama.NewAsyncProducer([]string{"localhost:9092"}, config)
 	if err != nil {
 		fmt.Printf("Failed to create producer: %s", err)
 		os.Exit(1)
 	}
-	msg := sarama.ProducerMessage{
-		Topic: "topic",
-		Key:   sarama.StringEncoder("key"),
-		Value: sarama.StringEncoder("data"),
-	}
-	p.Input() <- &msg
-	fmt.Printf("Successfully produced: %d; errors: %d\n", p.Successes(), p.Errors())
+
 }
 
 func main() {
@@ -99,5 +95,5 @@ func main() {
 	router.POST("/product", postProductHandler)
 	router.GET("/product/:id", getProductHandler)
 
-	router.Run("http_server:8080")
+	router.Run("localhost:8080")
 }

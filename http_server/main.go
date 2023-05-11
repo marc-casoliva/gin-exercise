@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"gin-exercise/m/v2/domain"
 	"gin-exercise/m/v2/infrastructure"
@@ -42,7 +43,13 @@ func postProductHandler(ctx *gin.Context) {
 		return
 	}
 
-	productRepository.Save(p)
+	productInBytes, _ := json.Marshal(p)
+	msg := sarama.ProducerMessage{
+		Topic: "product",
+		Key:   sarama.StringEncoder(p.ID),
+		Value: sarama.ByteEncoder(productInBytes),
+	}
+	asyncProducer.Input() <- &msg
 
 	ctx.JSON(http.StatusCreated, p)
 }

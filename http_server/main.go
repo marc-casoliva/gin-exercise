@@ -29,6 +29,12 @@ func postProductHandler(ctx *gin.Context) {
 		return
 	}
 
+	// new kafka message
+	// send message to kafka
+	// iferr abort with 404 or 500
+
+
+	// This goes go the kafka consumer:
 	p, err := domain.NewProduct(uuid.NewString(), domain.NewPriceInEuros(req.Price), req.Description)
 	if err != nil {
 		ctx.AbortWithStatusJSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
@@ -78,5 +84,5 @@ func main() {
 	router.POST("/product", postProductHandler)
 	router.GET("/product/:id", getProductHandler)
 
-	router.Run("localhost:8080")
+	router.Run("http_server:8080")
 }

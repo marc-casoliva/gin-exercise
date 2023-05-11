@@ -9,6 +9,7 @@ import (
 
 	"gin-exercise/m/v2/infrastructure/db"
 
+	"github.com/Shopify/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/spf13/viper"
@@ -32,7 +33,6 @@ func postProductHandler(ctx *gin.Context) {
 	// new kafka message
 	// send message to kafka
 	// iferr abort with 404 or 500
-
 
 	// This goes go the kafka consumer:
 	p, err := domain.NewProduct(uuid.NewString(), domain.NewPriceInEuros(req.Price), req.Description)
@@ -68,6 +68,21 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
+
+	config := sarama.NewConfig()
+	config.Producer.Return.Successes = true
+	p, err := sarama.NewAsyncProducer([]string{"broker:9092"}, config)
+	if err != nil {
+		fmt.Printf("Failed to create producer: %s", err)
+		os.Exit(1)
+	}
+	msg := sarama.ProducerMessage{
+		Topic: "topic",
+		Key:   sarama.StringEncoder("key"),
+		Value: sarama.StringEncoder("data"),
+	}
+	p.Input() <- &msg
+	fmt.Printf("Successfully produced: %d; errors: %d\n", p.Successes(), p.Errors())
 }
 
 func main() {
